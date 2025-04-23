@@ -1,18 +1,28 @@
 # Weather API Backend
 
-A simple NestJS backend for consuming the Weather API service and Spotify API for music recommendations.
+A NestJS backend for WeatherBeats that provides weather data and music recommendations by integrating with the Weather API service and Spotify API.
 
-## Setup
+## Deployment
+
+The API is currently deployed at: [https://weatherbeats.onrender.com](https://weatherbeats.onrender.com)
+
+You can test the deployment with:
+```bash
+# Get current weather for London
+curl https://weatherbeats.onrender.com/weather/current?city=London
+```
+
+## Setup for Local Development
 
 1. Install dependencies:
-   ```
+   ```bash
    npm install
    ```
 
 2. Configure API keys:
    - Sign up for a free API key at [Weather API](https://www.weatherapi.com/)
    - Create a Spotify application at [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/) to get Client ID and Secret
-   - Update the `.env` file with your API keys:
+   - Create a `.env` file with your API keys:
      ```
      WEATHER_API_KEY=your_api_key_here
      SPOTIFY_CLIENT_ID=your_spotify_client_id_here
@@ -122,4 +132,20 @@ npm run start:prod
   ],
   "message": "Based on the \"Partly cloudy\" weather condition, we recommend music from these genres: indie-rock, pop-rock, alternative."
 }
-``` 
+```
+
+## Technologies Used
+
+- NestJS - A progressive Node.js framework for building efficient and scalable server-side applications
+- TypeScript - For type-safe code
+- Axios - HTTP client for API requests
+- Spotify Web API - For music recommendations
+- Weather API - For weather data
+
+## Error Handling
+
+The API includes robust error handling for:
+- Invalid city names or coordinates
+- Weather API service disruptions
+- Spotify API authentication issues
+- Rate limiting 
