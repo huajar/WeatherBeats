@@ -1,151 +1,61 @@
-# Weather API Backend
+# WeatherBeats API
 
-A NestJS backend for WeatherBeats that provides weather data and music recommendations by integrating with the Weather API service and Spotify API.
+A NestJS-based API that provides weather data and music recommendations based on current weather conditions.
 
-## Deployment
+## Features
 
-The API is currently deployed at: [https://weatherbeats.onrender.com](https://weatherbeats.onrender.com)
+- Current weather data retrieval by city name or coordinates
+- Weather forecasts for up to 10 days
+- Music recommendations based on current weather conditions
+- Integration with Spotify for music suggestions
+- **Rate limiting** to ensure API stability and prevent abuse
 
-You can test the deployment with:
-```bash
-# Get current weather for London
-curl https://weatherbeats.onrender.com/weather/current?city=London
-```
+## API Endpoints
 
-## Setup for Local Development
+### Weather Endpoints
 
-1. Install dependencies:
+- `GET /weather/current?city={cityName}` - Get current weather for a city
+- `GET /weather/current/coordinates?lat={latitude}&lon={longitude}` - Get current weather by coordinates
+- `GET /weather/music-recommendation?city={cityName}` - Get music recommendations based on weather for a city
+- `GET /weather/music-recommendation/coordinates?lat={latitude}&lon={longitude}` - Get music recommendations based on weather by coordinates
+- `GET /weather/health` - Health check endpoint (not rate limited)
+
+## Rate Limiting
+
+The API implements rate limiting to ensure stability and fair usage. Different endpoints have different rate limits:
+
+| Endpoint Type | Limit | Time Window | Description |
+|---------------|-------|-------------|-------------|
+| Current Weather | 5 | 1 second | 5 requests per second |
+| Music Recommendations | 10 | 10 seconds | 10 requests per 10 seconds |
+| Other Endpoints | 100 | 60 seconds | 100 requests per minute |
+
+Rate limits are applied per IP address. Exceeding the rate limit will result in a `429 Too Many Requests` response.
+
+## Development Setup
+
+1. Clone the repository
+2. Install dependencies:
    ```bash
    npm install
    ```
 
-2. Configure API keys:
-   - Sign up for a free API key at [Weather API](https://www.weatherapi.com/)
-   - Create a Spotify application at [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/) to get Client ID and Secret
-   - Create a `.env` file with your API keys:
-     ```
-     WEATHER_API_KEY=your_api_key_here
-     SPOTIFY_CLIENT_ID=your_spotify_client_id_here
-     SPOTIFY_CLIENT_SECRET=your_spotify_client_secret_here
-     ```
+3. Configure your environment variables in a `.env` file:
+   ```
+   WEATHER_API_KEY=your_api_key_here
+   SPOTIFY_CLIENT_ID=your_spotify_client_id_here
+   SPOTIFY_CLIENT_SECRET=your_spotify_client_secret_here
+   ```
 
-## Running the application
+4. Run the API in development mode:
+   ```bash
+   npm run start:dev
+   ```
 
-```bash
-# development
-npm run start
+## Deployment
 
-# watch mode
-npm run start:dev
+The API is deployed on [Render](https://render.com) at [https://weatherbeats.onrender.com](https://weatherbeats.onrender.com).
 
-# production mode
-npm run build
-npm run start:prod
-```
+## License
 
-## API Endpoints
-
-- **GET /weather/current?city=London**
-  - Get current weather for a city
-  - Required query parameter: `city`
-
-- **GET /weather/forecast?city=London&days=3**
-  - Get weather forecast for a city
-  - Required query parameter: `city`
-  - Optional query parameter: `days` (default: 3, max: 10)
-
-- **GET /weather/current/coordinates?lat=51.5072&lon=0.1276**
-  - Get current weather using latitude and longitude
-  - Required query parameters: `lat` and `lon`
-
-- **GET /weather/forecast/coordinates?lat=51.5072&lon=0.1276&days=3**
-  - Get weather forecast using latitude and longitude
-  - Required query parameters: `lat` and `lon`
-  - Optional query parameter: `days` (default: 3, max: 10)
-
-- **GET /weather/music-recommendation?city=London**
-  - Get music recommendations from Spotify based on current weather conditions in a city
-  - Required query parameter: `city`
-
-- **GET /weather/music-recommendation/coordinates?lat=51.5072&lon=0.1276**
-  - Get music recommendations from Spotify based on current weather conditions at geographic coordinates
-  - Required query parameters: `lat` and `lon`
-
-## Example Responses
-
-### Weather Response
-
-```json
-{
-  "location": {
-    "name": "London",
-    "region": "City of London, Greater London",
-    "country": "United Kingdom",
-    "lat": 51.52,
-    "lon": -0.11,
-    "tz_id": "Europe/London",
-    "localtime_epoch": 1627930589,
-    "localtime": "2021-08-02 17:36"
-  },
-  "current": {
-    "temp_c": 19.0,
-    "temp_f": 66.2,
-    "condition": {
-      "text": "Partly cloudy",
-      "icon": "//cdn.weatherapi.com/weather/64x64/day/116.png",
-      "code": 1003
-    },
-    "wind_mph": 11.9,
-    "wind_kph": 19.1,
-    "humidity": 68,
-    "cloud": 75,
-    "feelslike_c": 19.0,
-    "feelslike_f": 66.2
-  }
-}
-```
-
-### Music Recommendation Response (Using Spotify)
-
-```json
-{
-  "weatherCondition": "Partly cloudy",
-  "recommendedGenres": ["indie-rock", "pop-rock", "alternative"],
-  "recommendedSongs": [
-    {
-      "title": "Do I Wanna Know?",
-      "artist": "Arctic Monkeys",
-      "album": "AM",
-      "previewUrl": "https://p.scdn.co/mp3-preview/...",
-      "spotifyUrl": "https://open.spotify.com/track/...",
-      "imageUrl": "https://i.scdn.co/image/..."
-    },
-    {
-      "title": "Mr. Brightside",
-      "artist": "The Killers",
-      "album": "Hot Fuss",
-      "previewUrl": "https://p.scdn.co/mp3-preview/...",
-      "spotifyUrl": "https://open.spotify.com/track/...",
-      "imageUrl": "https://i.scdn.co/image/..."
-    }
-    // More song recommendations
-  ],
-  "message": "Based on the \"Partly cloudy\" weather condition, we recommend music from these genres: indie-rock, pop-rock, alternative."
-}
-```
-
-## Technologies Used
-
-- NestJS - A progressive Node.js framework for building efficient and scalable server-side applications
-- TypeScript - For type-safe code
-- Axios - HTTP client for API requests
-- Spotify Web API - For music recommendations
-- Weather API - For weather data
-
-## Error Handling
-
-The API includes robust error handling for:
-- Invalid city names or coordinates
-- Weather API service disruptions
-- Spotify API authentication issues
-- Rate limiting 
+This project is licensed under the terms of the license included in the repository. 

@@ -29,12 +29,18 @@ For detailed information about the API endpoints and setup instructions, please 
 
 The frontend is built with Next.js 15, React 19, and Tailwind CSS 4, offering a modern and responsive user experience.
 
+### Live Demo
+
+The frontend application is deployed and accessible at:
+[https://weather-beats-seven.vercel.app](https://weather-beats-seven.vercel.app)
+
 ### Features
 
 - Weather visualization interface
 - Music recommendations based on current weather
 - Responsive design for various devices
 - Seamless integration with the backend API
+- Location-based search using device geolocation
 
 ### Frontend Documentation
 
@@ -75,6 +81,11 @@ For detailed information about the frontend setup and features, please check the
    ```
 
 6. Open your browser and navigate to [http://localhost:3000](http://localhost:3000) to see the application.
+
+## Deployment
+
+- **Backend**: Deployed on [Render](https://render.com) at [https://weatherbeats.onrender.com](https://weatherbeats.onrender.com)
+- **Frontend**: Deployed on [Vercel](https://vercel.com) at [https://weather-beats-seven.vercel.app](https://weather-beats-seven.vercel.app)
 
 ## License
 

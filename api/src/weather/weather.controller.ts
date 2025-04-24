@@ -1,4 +1,5 @@
-import { Controller, Get, Query, ValidationPipe, ParseFloatPipe, Logger, HttpException, HttpStatus, Catch } from '@nestjs/common';
+import { Controller, Get, Query, ValidationPipe, ParseFloatPipe, Logger, HttpException, HttpStatus, Catch, Param, UseGuards } from '@nestjs/common';
+import { Throttle, SkipThrottle, ThrottlerGuard } from '@nestjs/throttler';
 import { WeatherService } from './weather.service';
 import { SongRecommendationService } from './song-recommendation.service';
 
@@ -11,6 +12,7 @@ export class WeatherController {
     private readonly songRecommendationService: SongRecommendationService,
   ) {}
 
+  @Throttle({ short: { limit: 5, ttl: 1000 } })
   @Get('current')
   async getCurrentWeather(@Query('city') city: string) {
     if (!city) {
@@ -30,6 +32,7 @@ export class WeatherController {
     return this.weatherService.getForecast(city, days);
   }
 
+  @Throttle({ short: { limit: 5, ttl: 1000 } })
   @Get('current/coordinates')
   async getCurrentWeatherByCoordinates(
     @Query('lat', ParseFloatPipe) lat: number,
@@ -53,6 +56,7 @@ export class WeatherController {
     return this.weatherService.getForecastByCoordinates(lat, lon, days);
   }
 
+  @Throttle({ medium: { limit: 10, ttl: 10000 } })
   @Get('music-recommendation')
   async getMusicRecommendation(@Query('city') city: string) {
     try {
@@ -91,6 +95,7 @@ export class WeatherController {
     }
   }
 
+  @Throttle({ medium: { limit: 10, ttl: 10000 } })
   @Get('music-recommendation/coordinates')
   async getMusicRecommendationByCoordinates(
     @Query('lat', ParseFloatPipe) lat: number,
@@ -130,5 +135,11 @@ export class WeatherController {
         HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
+  }
+
+  @SkipThrottle()
+  @Get('health')
+  getHealth() {
+    return { status: 'ok' };
   }
 } 

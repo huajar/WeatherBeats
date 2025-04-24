@@ -499,7 +499,7 @@ export class SongRecommendationService {
       emotionalState: emotion,
       recommendedGenre: selectedGenre,
       recommendedSongs: songs,
-      message: `Based on the "${condition}" weather (${emotion} mood), we recommend ${selectedGenre} music. (Fallback mode: Spotify API unavailable)`
+      message: `Based on the "${condition}" weather (${emotion} mood), we recommend ${selectedGenre} music.`
     };
   }
 } 
