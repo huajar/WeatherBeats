@@ -7,7 +7,7 @@ WeatherBeats is a full-stack application that recommends music based on current 
 The project consists of two main components:
 
 - **API (Backend)** - A NestJS application that provides endpoints for weather data and music recommendations
-- **Frontend** - (Coming soon) - Will provide a user interface for interacting with the API
+- **Frontend** - A Next.js application that provides a user interface for interacting with the API
 
 ## API
 
@@ -25,15 +25,20 @@ The backend API is built with NestJS and is already deployed at:
 
 For detailed information about the API endpoints and setup instructions, please see the [API README](api/README.md).
 
-### Example API Usage
+## Frontend
 
-```bash
-# Get current weather for London
-GET https://weatherbeats.onrender.com/weather/current?city=London
+The frontend is built with Next.js 15, React 19, and Tailwind CSS 4, offering a modern and responsive user experience.
 
-# Get music recommendations based on weather in New York
-GET https://weatherbeats.onrender.com/weather/music-recommendation?city=New%20York
-```
+### Features
+
+- Weather visualization interface
+- Music recommendations based on current weather
+- Responsive design for various devices
+- Seamless integration with the backend API
+
+### Frontend Documentation
+
+For detailed information about the frontend setup and features, please check the [Frontend README](frontend/README.md).
 
 ## Getting Started
 
@@ -61,6 +66,15 @@ GET https://weatherbeats.onrender.com/weather/music-recommendation?city=New%20Yo
    ```bash
    npm run start:dev
    ```
+
+5. Set up the Frontend:
+   ```bash
+   cd ../frontend
+   npm install
+   npm run dev
+   ```
+
+6. Open your browser and navigate to [http://localhost:3000](http://localhost:3000) to see the application.
 
 ## License
 
